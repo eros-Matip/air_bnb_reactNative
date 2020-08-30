@@ -1,12 +1,22 @@
 import React from "react";
 import { useRoute } from "@react-navigation/core";
-import { Text, View, ImageBackground, StyleSheet, Image } from "react-native";
+import {
+  Text,
+  View,
+  ImageBackground,
+  StyleSheet,
+  Image,
+  Dimensions,
+} from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
+import MapView from "react-native-maps";
 
 export default function RoomScreen() {
   const { params } = useRoute();
   const navigation = useNavigation();
+
+  // const localisation =
 
   const image = {
     uri: params.item.photos[0],
@@ -66,6 +76,25 @@ export default function RoomScreen() {
       <Text numberOfLines={5} style={styles.description}>
         {params.item.user.account.description}
       </Text>
+      <View style={{ alignItems: "center", marginTop: 10 }}>
+        <MapView
+          style={styles.mapStyle}
+          initialRegion={{
+            latitude: params.item.loc[1],
+            longitude: params.item.loc[0],
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
+          }}
+          showsUserLocation={true}
+        >
+          <MapView.Marker
+            coordinate={{
+              longitude: params.item.loc[0],
+              latitude: params.item.loc[1],
+            }}
+          />
+        </MapView>
+      </View>
     </View>
   );
 }
@@ -111,5 +140,9 @@ const styles = StyleSheet.create({
   description: {
     paddingHorizontal: 15,
     fontSize: 20,
+  },
+  mapStyle: {
+    width: "90%",
+    height: 150,
   },
 });

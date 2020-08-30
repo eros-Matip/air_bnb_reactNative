@@ -38,7 +38,6 @@ function SignUp({ navigation, setToken }) {
       }
     );
     setData(response.data);
-    console.log("response.data->", response.data);
     if (response.data.token) {
       await AsyncStorage.setItem("userToken", response.data.token);
     }
