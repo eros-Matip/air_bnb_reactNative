@@ -3,13 +3,15 @@ import axios from "axios";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { FontAwesome5 } from "@expo/vector-icons";
+import TextInputs from "../components/TextInput";
+import TextArea from "../components/TextArea";
+import Password from "../components/Password";
+import Confirm from "../components/ConfirmPassword";
 
 function SignUp({ navigation, setToken }) {
   const [email, setEmail] = useState("");
@@ -19,11 +21,6 @@ function SignUp({ navigation, setToken }) {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [data, setData] = useState({});
-  const [hidden, sethidden] = useState(true);
-
-  const handleClic = () => {
-    sethidden(!hidden);
-  };
 
   const handleSubmitLogin = async () => {
     const response = await axios.post(
@@ -57,73 +54,61 @@ function SignUp({ navigation, setToken }) {
           Rejoignez-nous !
         </Text>
         {/* bloc of 3rd first */}
+
         <View style={{ width: "100%" }}>
-          <TextInput
-            style={styles.textInputUser}
-            placeholder="Email"
-            placeholderTextColor="white"
+          <TextInputs
+            placeholder="email"
             onChangeText={setEmail}
             value={email}
-          ></TextInput>
-          <TextInput
-            style={styles.textInputUser}
-            placeholder="username"
             placeholderTextColor="white"
+            style={styles.inputBorder}
+          />
+          <TextInputs
+            placeholder="username"
             onChangeText={setUsername}
             value={username}
-          ></TextInput>
-          <TextInput
-            style={styles.textInputUser}
-            placeholder="Name"
             placeholderTextColor="white"
+            style={styles.inputBorder}
+          />
+
+          <TextInputs
+            placeholder="Name"
             onChangeText={setName}
             value={name}
-          ></TextInput>
+            placeholderTextColor="white"
+            style={styles.inputBorder}
+          />
         </View>
 
         {/* bloc of Textarea */}
+
         <View style={{ width: "100%" }}>
-          <TextInput
-            multiline={true}
-            numberOfLines={10}
+          <TextArea
             onChangeText={setDescirption}
             value={descirption}
-            style={styles.textArea}
-            placeholder="Presentez-vous en quelques lignes"
             placeholderTextColor="white"
           />
         </View>
 
         {/* bloc of Password */}
-        {/* <View style={{ width: "100%", position: "relative" }}> */}
-        <View style={styles.eye}>
-          <TextInput
-            style={styles.textInputPassword}
-            placeholder="Mot de passe"
-            placeholderTextColor="white"
-            onChangeText={setPassword}
-            value={password}
-            secureTextEntry={hidden}
-          ></TextInput>
-          <TouchableOpacity onPress={handleClic} style={styles.btn_eye}>
-            <FontAwesome5 name="eye" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
 
-        <View style={styles.eye}>
-          <TextInput
-            style={styles.textInputPassword}
-            placeholder="Confirmez le Mot de passe"
-            placeholderTextColor="white"
-            onChangeText={setPasswordConfirm}
-            value={passwordConfirm}
-            secureTextEntry={hidden}
-          ></TextInput>
-          <TouchableOpacity onPress={handleClic} style={styles.btn_eye}>
-            <FontAwesome5 name="eye" size={24} color="black" />
-          </TouchableOpacity>
+        <View style={{ width: "100%", position: "relative" }}>
+          <View style={styles.eye}>
+            <Password
+              onChangeText={setPassword}
+              value={password}
+              placeholderTextColor="white"
+            />
+          </View>
+
+          <View style={styles.eye}>
+            <Confirm
+              onChangeText={setPasswordConfirm}
+              value={passwordConfirm}
+              placeholderTextColor="white"
+            />
+          </View>
         </View>
-        {/* </View> */}
         <View>
           <TouchableOpacity
             style={styles.buttonLogin}
@@ -156,25 +141,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FF495A",
   },
-  textInputUser: {
-    height: 20,
+
+  inputBorder: {
     borderColor: "white",
-    borderBottomWidth: 1,
-    marginBottom: 50,
   },
-  textArea: {
-    height: 100,
-    borderColor: "white",
-    borderWidth: 1,
-    marginBottom: 50,
-  },
-  textInputPassword: {
-    height: 20,
-    width: "100%",
-    borderColor: "white",
-    borderBottomWidth: 1,
-    marginBottom: 50,
-  },
+
   buttonLogin: {
     height: 40,
     width: 200,

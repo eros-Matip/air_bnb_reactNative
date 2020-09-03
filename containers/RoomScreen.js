@@ -1,13 +1,6 @@
 import React from "react";
 import { useRoute } from "@react-navigation/core";
-import {
-  Text,
-  View,
-  ImageBackground,
-  StyleSheet,
-  Image,
-  Dimensions,
-} from "react-native";
+import { Text, View, ImageBackground, StyleSheet, Image } from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import MapView from "react-native-maps";
@@ -15,8 +8,6 @@ import MapView from "react-native-maps";
 export default function RoomScreen() {
   const { params } = useRoute();
   const navigation = useNavigation();
-
-  // const localisation =
 
   const image = {
     uri: params.item.photos[0],
@@ -41,7 +32,6 @@ export default function RoomScreen() {
     <View style={styles.page}>
       <View style={styles.header}>
         <View style={styles.headerDispach}>
-          {/* <Button title="Go back" o />; */}
           <Ionicons
             name="ios-arrow-back"
             size={35}
@@ -106,7 +96,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: "#FF495A",
     alignItems: "center",
-    // justifyContent: "center",
     flexDirection: "row",
   },
   headerText: {

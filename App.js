@@ -8,8 +8,9 @@ import HomeScreen from "./containers/HomeScreen";
 import RoomScreen from "./containers/RoomScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
-import SettingsScreen from "./containers/SettingsScreen";
+// import SettingsScreen from "./containers/SettingsScreen";
 import ArroundMe from "./containers/ArroundMe";
+import ProfileScreen from "./containers/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -99,7 +100,7 @@ export default function App() {
                           title: "User Room",
                         }}
                       >
-                        {() => <RoomScreen />}
+                        {(props) => <RoomScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
@@ -124,13 +125,44 @@ export default function App() {
                         name="Arround"
                         options={{ title: "Arround", tabBarLabel: "Arround" }}
                       >
-                        {() => <ArroundMe />}
+                        {(props) => <ArroundMe {...props} />}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="Room2"
+                        options={{ title: "Room", tabBarLabel: "Room" }}
+                      >
+                        {(props) => <RoomScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
 
                 <Tab.Screen
+                  name="Profile"
+                  options={{
+                    tabBarLabel: "Profile",
+                    tabBarIcon: ({ color, size }) => (
+                      <MaterialCommunityIcons
+                        name="face-profile"
+                        size={24}
+                        color="black"
+                      />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="Profile"
+                        options={{ title: "Profile", tabBarLabel: "Profile" }}
+                      >
+                        {() => <ProfileScreen setToken={setToken} />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+
+                {/* <Tab.Screen
                   name="Settings"
                   options={{
                     tabBarLabel: "Settings",
@@ -153,7 +185,7 @@ export default function App() {
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
-                </Tab.Screen>
+                </Tab.Screen> */}
               </Tab.Navigator>
             )}
           </Stack.Screen>

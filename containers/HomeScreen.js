@@ -24,6 +24,7 @@ const displayStars = (num) => {
       tab.push(<Entypo name="star" size={24} color="#FFB100" key={index} />);
     }
   }
+
   return tab;
 };
 

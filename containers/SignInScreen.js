@@ -33,6 +33,8 @@ function LogIn({ setToken }) {
       <ActivityIndicator size="large" color="#white" />;
     }
     if (email !== "") {
+      console.log("3");
+
       if (password !== "") {
         const response = await axios.post(
           "https://air-bnb-api-eros.herokuapp.com/logIn",
@@ -41,9 +43,11 @@ function LogIn({ setToken }) {
             password: password,
           }
         );
+
         setData(response.data);
         setToken(response.data.token);
         setIsLoading(true);
+
         if (response.data.token) {
           await AsyncStorage.setItem("userToken", response.data.token);
         }
@@ -75,6 +79,7 @@ function LogIn({ setToken }) {
             <TextInput
               style={styles.input}
               placeholder="Email"
+              placeholderTextColor="white"
               value={email}
               onChangeText={(text) => {
                 setEmail(text);
@@ -84,6 +89,7 @@ function LogIn({ setToken }) {
               <TextInput
                 style={styles.input}
                 placeholder="Mot de passe"
+                placeholderTextColor="white"
                 value={password}
                 secureTextEntry={hidden}
                 onChangeText={(text) => {
