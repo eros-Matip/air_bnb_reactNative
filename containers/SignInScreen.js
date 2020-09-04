@@ -33,11 +33,11 @@ function LogIn({ setToken }) {
       <ActivityIndicator size="large" color="#white" />;
     }
     if (email !== "") {
-      console.log("3");
-
       if (password !== "") {
         const response = await axios.post(
-          "https://air-bnb-api-eros.herokuapp.com/logIn",
+          "http://localhost:3000/logIn",
+          // "https://air-bnb-api-eros.herokuapp.com/logIn",
+
           {
             email: email,
             password: password,
@@ -50,6 +50,7 @@ function LogIn({ setToken }) {
 
         if (response.data.token) {
           await AsyncStorage.setItem("userToken", response.data.token);
+          await AsyncStorage.setItem("_id", response.data.id);
         }
       } else {
         setErrorMessage("password is missing");

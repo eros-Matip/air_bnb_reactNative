@@ -17,7 +17,7 @@ const TextArea = ({ onChangeText, value, placeholderTextColor }) => {
 const styles = StyleSheet.create({
   textArea: {
     height: 100,
-    borderColor: "white",
+    width: "90%",
     borderWidth: 1,
     marginBottom: 50,
   },

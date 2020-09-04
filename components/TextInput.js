@@ -21,6 +21,7 @@ const TextInputs = ({
 const styles = StyleSheet.create({
   textInputUser: {
     height: 20,
+    width: "90%",
     borderBottomWidth: 1,
     marginBottom: 50,
   },

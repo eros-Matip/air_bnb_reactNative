@@ -17,7 +17,7 @@ function SignUp({ navigation, setToken }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
-  const [descirption, setDescirption] = useState("");
+  const [description, setDescription] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [data, setData] = useState({});
@@ -27,9 +27,11 @@ function SignUp({ navigation, setToken }) {
       "https://air-bnb-api-eros.herokuapp.com/sign_up",
       {
         email: email,
-        username: username,
-        name: name,
-        descirption: descirption,
+        account: {
+          username: username,
+          name: name,
+          description: description,
+        },
         password: password,
         passwordConfirm: passwordConfirm,
       }
@@ -37,6 +39,7 @@ function SignUp({ navigation, setToken }) {
     setData(response.data);
     if (response.data.token) {
       await AsyncStorage.setItem("userToken", response.data.token);
+      await AsyncStorage.setItem("_id", response.data.id);
     }
     if (response.data.id) {
       alert(`Welcome Home ${name}`);
@@ -84,8 +87,8 @@ function SignUp({ navigation, setToken }) {
 
         <View style={{ width: "100%" }}>
           <TextArea
-            onChangeText={setDescirption}
-            value={descirption}
+            onChangeText={setDescription}
+            value={description}
             placeholderTextColor="white"
           />
         </View>

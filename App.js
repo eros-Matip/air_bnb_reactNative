@@ -17,7 +17,8 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(null);
+  const [userToken, setUserToken] = useState("");
+  const [userId, setUserId] = useState("");
 
   const setToken = async (token) => {
     if (token) {
@@ -33,11 +34,13 @@ export default function App() {
     const bootstrapAsync = async () => {
       // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
+      const id = await AsyncStorage.getItem("_id");
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       setIsLoading(false);
       setUserToken(userToken);
+      setUserId(id);
     };
 
     bootstrapAsync();
@@ -156,7 +159,9 @@ export default function App() {
                         name="Profile"
                         options={{ title: "Profile", tabBarLabel: "Profile" }}
                       >
-                        {() => <ProfileScreen setToken={setToken} />}
+                        {() => (
+                          <ProfileScreen setToken={setToken} userId={userId} />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
