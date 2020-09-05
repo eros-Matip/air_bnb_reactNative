@@ -3,7 +3,9 @@ import { Button, Text, View, StyleSheet, ImageBackground } from "react-native";
 import TextInputs from "../components/TextInput";
 import TextArea from "../components/TextArea";
 import axios from "axios";
-const Profile = ({ setToken, userId }) => {
+import AsyncStorage from "@react-native-community/async-storage";
+
+const Profile = ({ setToken, userId, setUserId, navigation }) => {
   const [data, setData] = useState("");
   const [emailUpdated, setEmailUpdated] = useState("");
   const [usernameUpdated, setUsernameUpdated] = useState("");
@@ -13,23 +15,22 @@ const Profile = ({ setToken, userId }) => {
     uri: "https://reactnative.dev/img/tiny_logo.png",
   };
 
-  const idFinded = "5f3ed9e7f4f3d877d5a83b55";
+  const idFinded = userId;
   console.log("userId->", idFinded);
-  const nameBloc = "eros@eros.com";
-  const userNameBloc = "eros";
-  const descriptionBloc = "blablabla";
 
   const handleSubmit = async () => {
     const response = await axios.post("http://localhost:3000/profile", {
       _id: idFinded,
-      email: nameBloc,
+      email: emailUpdated,
       account: {
-        username: userNameBloc,
-        name: nameBloc,
-        description: descriptionBloc,
+        username: usernameUpdated,
+        name: nameUpdated,
+        description: descriptionUpdated,
       },
     });
-    console.log("response->", response.data);
+    setData(response.data);
+    alert(`vos données sont bien modifiées ${response.data.username}`);
+    navigation.navigate("Home");
   };
 
   return (
@@ -44,7 +45,7 @@ const Profile = ({ setToken, userId }) => {
         <TextInputs
           placeholder="email"
           onChangeText={(text) => {
-            setEmail(text);
+            setEmailUpdated(text);
           }}
           value={emailUpdated}
           placeholderTextColor="black"
@@ -82,8 +83,11 @@ const Profile = ({ setToken, userId }) => {
         <Button title="Mettre à jour" onPress={handleSubmit} />
         <Button
           title="Se Deconnecter"
-          onPress={() => {
+          onPress={async () => {
             setToken(null);
+            setUserId(null);
+            await AsyncStorage.removeItem("userToken");
+            await AsyncStorage.removeItem("_id");
           }}
         />
       </View>

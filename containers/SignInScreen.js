@@ -43,14 +43,14 @@ function LogIn({ setToken }) {
             password: password,
           }
         );
-
+        console.log("response.data->", response.data);
         setData(response.data);
         setToken(response.data.token);
         setIsLoading(true);
 
         if (response.data.token) {
           await AsyncStorage.setItem("userToken", response.data.token);
-          await AsyncStorage.setItem("_id", response.data.id);
+          await AsyncStorage.setItem("_id", response.data._id);
         }
       } else {
         setErrorMessage("password is missing");

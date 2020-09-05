@@ -30,14 +30,10 @@ export default function App() {
   };
 
   useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place !
     const bootstrapAsync = async () => {
-      // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
       const id = await AsyncStorage.getItem("_id");
 
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
       setIsLoading(false);
       setUserToken(userToken);
       setUserId(id);
@@ -50,6 +46,7 @@ export default function App() {
     <NavigationContainer>
       {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
         // No token found, user isn't signed in
+
         <Stack.Navigator>
           <Stack.Screen
             name="SignIn"
@@ -63,6 +60,7 @@ export default function App() {
         </Stack.Navigator>
       ) : (
         // User is signed in
+
         <Stack.Navigator>
           <Stack.Screen
             name="Tab"
@@ -159,38 +157,18 @@ export default function App() {
                         name="Profile"
                         options={{ title: "Profile", tabBarLabel: "Profile" }}
                       >
-                        {() => (
-                          <ProfileScreen setToken={setToken} userId={userId} />
+                        {(props) => (
+                          <ProfileScreen
+                            {...props}
+                            setToken={setToken}
+                            setUserId={setUserId}
+                            userId={userId}
+                          />
                         )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
-
-                {/* <Tab.Screen
-                  name="Settings"
-                  options={{
-                    tabBarLabel: "Settings",
-                    tabBarIcon: ({ color, size }) => (
-                      <Ionicons
-                        name={"ios-options"}
-                        size={size}
-                        color={color}
-                      />
-                    ),
-                  }}
-                >
-                  {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="Settings"
-                        options={{ title: "Settings", tabBarLabel: "Settings" }}
-                      >
-                        {() => <SettingsScreen setToken={setToken} />}
-                      </Stack.Screen>
-                    </Stack.Navigator>
-                  )}
-                </Tab.Screen> */}
               </Tab.Navigator>
             )}
           </Stack.Screen>

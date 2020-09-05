@@ -10,6 +10,7 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import axios from "axios";
 import { Entypo } from "@expo/vector-icons";
@@ -48,57 +49,59 @@ function HomeScreen() {
   return isLoading ? (
     <ActivityIndicator size="large" color="#00ff00" />
   ) : (
-    <View style={styles.page}>
-      <FlatList
-        data={data.rooms}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.container}>
-              <ImageBackground
-                source={{
-                  uri: item.photos[0],
-                }}
-                style={styles.bgImage}
-              >
-                <View style={styles.priceView}>
-                  <Text style={styles.price}>{item.price} €</Text>
-                </View>
-              </ImageBackground>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Room", {
-                    item: item,
-                  });
-                }}
-              >
-                <View style={styles.informations}>
-                  <View style={styles.informationsTexts}>
-                    <Text numberOfLines={1} style={styles.title}>
-                      {item.title}
-                    </Text>
-                    <View style={styles.rating}>
-                      <View style={{ flexDirection: "row" }}>
-                        {displayStars(item.ratingValue)}
+    <SafeAreaView>
+      <View style={styles.page}>
+        <FlatList
+          data={data.rooms}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.container}>
+                <ImageBackground
+                  source={{
+                    uri: item.photos[0],
+                  }}
+                  style={styles.bgImage}
+                >
+                  <View style={styles.priceView}>
+                    <Text style={styles.price}>{item.price} €</Text>
+                  </View>
+                </ImageBackground>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("Room", {
+                      item: item,
+                    });
+                  }}
+                >
+                  <View style={styles.informations}>
+                    <View style={styles.informationsTexts}>
+                      <Text numberOfLines={1} style={styles.title}>
+                        {item.title}
+                      </Text>
+                      <View style={styles.rating}>
+                        <View style={{ flexDirection: "row" }}>
+                          {displayStars(item.ratingValue)}
+                        </View>
+                        <Text>{item.reviews} avis</Text>
                       </View>
-                      <Text>{item.reviews} avis</Text>
+                    </View>
+                    <View>
+                      <Image
+                        source={{
+                          uri: item.user.account.photos[0],
+                        }}
+                        style={styles.profilePicture}
+                      />
                     </View>
                   </View>
-                  <View>
-                    <Image
-                      source={{
-                        uri: item.user.account.photos[0],
-                      }}
-                      style={styles.profilePicture}
-                    />
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-        keyExtractor={(item) => item._id}
-      />
-    </View>
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+          keyExtractor={(item) => item._id}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
