@@ -43,7 +43,6 @@ function LogIn({ setToken }) {
             password: password,
           }
         );
-        console.log("response.data->", response.data);
         setData(response.data);
         setToken(response.data.token);
         setIsLoading(true);

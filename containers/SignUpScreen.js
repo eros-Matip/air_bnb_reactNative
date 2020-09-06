@@ -24,7 +24,8 @@ function SignUp({ navigation, setToken }) {
 
   const handleSubmitLogin = async () => {
     const response = await axios.post(
-      "https://air-bnb-api-eros.herokuapp.com/sign_up",
+      "http://localhost:3000/sign_up",
+      // "https://air-bnb-api-eros.herokuapp.com/sign_up",
       {
         email: email,
         account: {

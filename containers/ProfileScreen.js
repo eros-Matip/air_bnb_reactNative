@@ -1,25 +1,74 @@
 import React, { useState, useEffect } from "react";
-import { Button, Text, View, StyleSheet, ImageBackground } from "react-native";
+import {
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  ImageBackground,
+} from "react-native";
 import TextInputs from "../components/TextInput";
 import TextArea from "../components/TextArea";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
+import { FontAwesome } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-const Profile = ({ setToken, userId, setUserId, navigation }) => {
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+
+const Profile = ({ userToken, setToken, userId, setUserId, navigation }) => {
+  console.log("1");
   const [data, setData] = useState("");
   const [emailUpdated, setEmailUpdated] = useState("");
   const [usernameUpdated, setUsernameUpdated] = useState("");
   const [nameUpdated, setNameUpdated] = useState("");
   const [descriptionUpdated, setDescriptionUpdated] = useState("");
+  const [picture, setPicture] = useState(null);
+  console.log("2");
+
   const profilPicture = {
     uri: "https://reactnative.dev/img/tiny_logo.png",
   };
+  console.log("3");
+
+  const handleChangePicture = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === "granted") {
+      console.log("4");
+
+      const result = await ImagePicker.launchImageLibraryAsync();
+      if (!result.cancelled) {
+        setPicture(result.uri);
+        console.log("5");
+
+        // try {
+        //   const uri = picture;
+        //   const uriParts = uri.split(".");
+        //   const fileType = uriParts[1];
+
+        //   const formData = new FormData();
+        //   formData.append("photo", {
+        //     uri,
+        //     name: `photo.${fileType}`,
+        //     type: `image/${fileType}`,
+        //   });
+        //   console.log("6");
+        // } catch (error) {
+        //   console.log(error.message);
+        // }
+      }
+    } else {
+      alert("Accès refusé");
+    }
+  };
+  console.log("7");
 
   const idFinded = userId;
-  console.log("userId->", idFinded);
+  console.log("idFinded->", idFinded);
 
   const handleSubmit = async () => {
-    const response = await axios.post("http://localhost:3000/profile", {
+    const response = await axios.put("http://localhost:3000/profile", {
       _id: idFinded,
       email: emailUpdated,
       account: {
@@ -27,7 +76,10 @@ const Profile = ({ setToken, userId, setUserId, navigation }) => {
         name: nameUpdated,
         description: descriptionUpdated,
       },
+      // picture,
     });
+    console.log("8");
+
     setData(response.data);
     alert(`vos données sont bien modifiées ${response.data.username}`);
     navigation.navigate("Home");
@@ -36,11 +88,16 @@ const Profile = ({ setToken, userId, setUserId, navigation }) => {
   return (
     <View style={styles.page}>
       <View style={styles.container}>
-        <View style={styles.picture}>
-          <ImageBackground
-            source={profilPicture}
-            style={styles.image}
-          ></ImageBackground>
+        <View style={styles.pictureUpload}>
+          {!picture ? (
+            <Image source={profilPicture} style={styles.image}></Image>
+          ) : (
+            <Image source={{ uri: picture }} style={styles.image}></Image>
+          )}
+
+          <TouchableOpacity onPress={handleChangePicture}>
+            <FontAwesome name="picture-o" size={24} color="black" />
+          </TouchableOpacity>
         </View>
         <TextInputs
           placeholder="email"
@@ -119,17 +176,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  picture: {
+  pictureUpload: {
     height: 150,
     width: 150,
+    borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "black",
-    borderWidth: 1,
     marginVertical: 50,
   },
   image: {
-    height: "50%",
-    width: "50%",
+    height: "100%",
+    width: "100%",
+    borderRadius: 100,
   },
 });

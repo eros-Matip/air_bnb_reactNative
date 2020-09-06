@@ -160,6 +160,7 @@ export default function App() {
                         {(props) => (
                           <ProfileScreen
                             {...props}
+                            userToken={userToken}
                             setToken={setToken}
                             setUserId={setUserId}
                             userId={userId}
