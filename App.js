@@ -8,7 +8,6 @@ import HomeScreen from "./containers/HomeScreen";
 import RoomScreen from "./containers/RoomScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
-// import SettingsScreen from "./containers/SettingsScreen";
 import ArroundMe from "./containers/ArroundMe";
 import ProfileScreen from "./containers/ProfileScreen";
 
@@ -44,9 +43,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
-        // No token found, user isn't signed in
-
+      {isLoading ? null : userToken === null ? (
         <Stack.Navigator>
           <Stack.Screen
             name="SignIn"

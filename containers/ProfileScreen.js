@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Text,
@@ -18,81 +18,100 @@ import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 
 const Profile = ({ userToken, setToken, userId, setUserId, navigation }) => {
-  console.log("1");
   const [data, setData] = useState("");
   const [emailUpdated, setEmailUpdated] = useState("");
   const [usernameUpdated, setUsernameUpdated] = useState("");
   const [nameUpdated, setNameUpdated] = useState("");
   const [descriptionUpdated, setDescriptionUpdated] = useState("");
-  const [picture, setPicture] = useState(null);
-  console.log("2");
+  const [pictureUpdated, setPictureUpdated] = useState(null);
 
   const profilPicture = {
     uri: "https://reactnative.dev/img/tiny_logo.png",
   };
-  console.log("3");
-
   const handleChangePicture = async () => {
+    console.log("1");
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status === "granted") {
-      console.log("4");
+      console.log("2");
 
       const result = await ImagePicker.launchImageLibraryAsync();
       if (!result.cancelled) {
-        setPicture(result.uri);
+        console.log("3");
+
+        setPictureUpdated(result.uri);
+        console.log("4");
+
+        const uri = result.uri;
         console.log("5");
 
-        // try {
-        //   const uri = picture;
-        //   const uriParts = uri.split(".");
-        //   const fileType = uriParts[1];
+        const uriParts = uri.split(".");
+        console.log("6");
 
-        //   const formData = new FormData();
-        //   formData.append("photo", {
-        //     uri,
-        //     name: `photo.${fileType}`,
-        //     type: `image/${fileType}`,
-        //   });
-        //   console.log("6");
-        // } catch (error) {
-        //   console.log(error.message);
-        // }
+        const fileType = uriParts[1];
+        console.log("7");
+
+        const formData = new FormData();
+        console.log("8");
+
+        formData.append("photo", {
+          uri,
+          name: `photo.${fileType}`,
+          type: `image/${fileType}`,
+        });
+        console.log("9");
+
+        const sendPhoto = await axios.put(
+          "http://localhost:3000/profile",
+          formData,
+          {
+            _id: idFinded,
+            picture: pictureUpdated,
+          }
+        );
+        console.log("10");
+
+        console.log("sendPhoto->", sendPhoto);
+        if (sendPhoto.data.photo[0].url) {
+          console.log("11");
+
+          alert("Photo envoyée");
+        }
       }
     } else {
       alert("Accès refusé");
     }
   };
-  console.log("7");
 
   const idFinded = userId;
-  console.log("idFinded->", idFinded);
 
   const handleSubmit = async () => {
-    const response = await axios.put("http://localhost:3000/profile", {
-      _id: idFinded,
-      email: emailUpdated,
-      account: {
+    const response = await axios.put(
+      "http://localhost:3000/profile",
+
+      {
+        _id: idFinded,
+        email: emailUpdated,
         username: usernameUpdated,
         name: nameUpdated,
         description: descriptionUpdated,
-      },
-      // picture,
-    });
-    console.log("8");
+      }
+    );
 
     setData(response.data);
     alert(`vos données sont bien modifiées ${response.data.username}`);
     navigation.navigate("Home");
   };
-
   return (
     <View style={styles.page}>
       <View style={styles.container}>
         <View style={styles.pictureUpload}>
-          {!picture ? (
+          {!pictureUpdated ? (
             <Image source={profilPicture} style={styles.image}></Image>
           ) : (
-            <Image source={{ uri: picture }} style={styles.image}></Image>
+            <Image
+              source={{ uri: pictureUpdated }}
+              style={styles.image}
+            ></Image>
           )}
 
           <TouchableOpacity onPress={handleChangePicture}>
